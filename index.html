@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>کارائوکه ساز</title>
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-180.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="کارائوکه">
+<meta name="theme-color" content="#d6336c">
+<style>
+:root{--bg:#f6f4ef;--card:#fff;--tx:#222;--mut:#777;--ac:#d6336c;--bd:#e3ded3;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#17161a;--card:#222126;--tx:#eee;--mut:#9a98a0;--ac:#f06595;--bd:#35333b}}
+:root[data-theme="dark"]{--bg:#17161a;--card:#222126;--tx:#eee;--mut:#9a98a0;--ac:#f06595;--bd:#35333b}
+html{color-scheme:light dark;-webkit-text-size-adjust:100%;-webkit-tap-highlight-color:transparent}
+body{margin:0;background:var(--bg);color:var(--tx);font-family:Tahoma,"Vazirmatn",system-ui,sans-serif;line-height:1.6;padding-bottom:130px}
+button{border:0;background:none;color:inherit;font:inherit;cursor:pointer;touch-action:manipulation;padding:0}
+main{max-width:520px;margin:0 auto;padding:0 16px}
+header{display:flex;justify-content:space-between;align-items:center;padding:14px 0 10px}
+h1{font-size:1.8rem;margin:0}
+.ib{width:46px;height:46px;border-radius:50%;background:var(--ac);color:#fff;display:flex;align-items:center;justify-content:center;flex:none}
+.ib.g{background:var(--bd);color:var(--tx)}
+.row{display:flex;align-items:center;gap:12px;padding:10px;border-radius:14px;cursor:pointer}
+.row.cu{background:var(--card)}
+.art{width:50px;height:50px;border-radius:12px;background:linear-gradient(135deg,var(--ac),#7048e8);color:#fff;display:flex;align-items:center;justify-content:center;flex:none}
+.art.big{width:min(70vw,290px);height:min(70vw,290px);border-radius:28px;margin:16px auto}
+.mt{flex:1;min-width:0}
+.nm{font-weight:bold;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sub{color:var(--mut);font-size:.85rem}
+.em{text-align:center;color:var(--mut);padding:70px 20px}
+#mini{position:fixed;left:10px;right:10px;bottom:calc(10px + env(safe-area-inset-bottom,0px));max-width:500px;margin:0 auto;background:var(--card);border:1px solid var(--bd);border-radius:18px;box-shadow:0 6px 24px rgba(0,0,0,.2);overflow:hidden;z-index:10}
+.pb{height:3px;background:var(--bd);direction:ltr}
+.pb i{display:block;height:100%;width:0;background:var(--ac)}
+.mr{display:flex;align-items:center;gap:10px;padding:8px 10px;cursor:pointer}
+.mr .art{width:42px;height:42px;border-radius:10px}
+.ctl{display:flex;align-items:center;justify-content:center;gap:8px;direction:ltr}
+.ctl.big{gap:26px;margin:14px 0}
+.ctl.big button{width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center}
+.ctl.big #fpl{width:76px;height:76px;background:var(--ac);color:#fff}
+#full{position:fixed;inset:0;z-index:20;background:var(--bg);transform:translateY(100%);transition:transform .3s;overflow-y:auto;padding:calc(12px + env(safe-area-inset-top,0px)) 20px calc(24px + env(safe-area-inset-bottom,0px));text-align:center}
+#full.open{transform:none}
+#full .top{display:flex}
+.nm.big{font-size:1.25rem;white-space:normal}
+.sk{direction:ltr;margin-top:10px}
+.sk input{width:100%;height:32px;accent-color:var(--ac)}
+.tm{display:flex;justify-content:space-between;font-size:.85rem;color:var(--mut)}
+.c{background:var(--card);border:1px solid var(--bd);border-radius:16px;padding:14px;margin-top:14px;text-align:right}
+.tr{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.sw{width:58px;height:34px;border-radius:17px;background:var(--bd);position:relative;direction:ltr;flex:none;transition:.2s}
+.sw::after{content:"";position:absolute;top:3px;left:3px;width:28px;height:28px;border-radius:50%;background:#fff;transition:.2s}
+.sw.on{background:var(--ac)}
+.sw.on::after{left:27px}
+.sw:disabled{opacity:.5}
+.opt{margin-top:12px;border-top:1px solid var(--bd);padding-top:10px}
+.opt input[type=range]{width:100%;height:30px;accent-color:var(--ac)}
+.opt input[type=checkbox]{width:24px;height:24px;accent-color:var(--ac)}
+.opt label{display:flex;align-items:center;gap:10px;min-height:40px}
+.acts{display:flex;gap:10px;margin-top:14px}
+.acts button{flex:1;min-height:48px;border-radius:12px;background:var(--bd)}
+</style>
+</head>
+<body>
+<main>
+<header><h1>🎤 کتابخانه</h1><button class="ib" id="add" aria-label="افزودن آهنگ"></button></header>
+<input type="file" id="fi" accept="audio/*" multiple hidden>
+<div id="ls"></div>
+</main>
+<audio id="au" preload="auto"></audio>
+
+<div id="mini" hidden>
+  <div class="pb"><i id="mp"></i></div>
+  <div class="mr" id="mopen">
+    <div class="art"></div>
+    <div class="mt"><div class="nm" id="mn"></div><div class="sub" id="mv"></div></div>
+    <div class="ctl"><button class="ib g" id="mpl" aria-label="پخش/توقف"></button><button class="ib g" id="mnx" aria-label="بعدی"></button></div>
+  </div>
+</div>
+
+<section id="full">
+  <div class="top"><button class="ib g" id="cl" aria-label="بستن"></button></div>
+  <div class="art big"></div>
+  <div class="nm big" id="fn"></div>
+  <div class="sk"><input type="range" id="sk" min="0" max="100" value="0" step="0.1"><div class="tm"><span id="t1">0:00</span><span id="t2">0:00</span></div></div>
+  <div class="ctl big"><button class="ib g" id="pv" aria-label="قبلی"></button><button class="ib" id="fpl" aria-label="پخش/توقف"></button><button class="ib g" id="nx" aria-label="بعدی"></button></div>
+  <div class="c">
+    <div class="tr"><div><b>صدای خواننده</b><div class="sub" id="vs"></div></div><button class="sw on" id="tg" role="switch" aria-checked="true" aria-label="صدای خواننده"></button></div>
+    <div class="opt">
+      <label><input type="checkbox" id="bass" checked>بیس رو نگه دار</label>
+      <label for="amt" style="display:block">میزان حذف صدا: <b id="av">100</b>٪</label>
+      <input type="range" id="amt" min="0" max="100" value="100" oninput="av.textContent=this.value">
+    </div>
+  </div>
+  <div class="acts"><button id="shr">📤 ذخیره کارائوکه</button><button id="rm">🗑️ حذف از لیست</button></div>
+</section>
+
+<script>
+const $=id=>document.getElementById(id);
+const P={play:'<path d="M8 5v14l11-7z"/>',pause:'<path d="M6 5h4v14H6zm8 0h4v14h-4z"/>',next:'<path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/>',prev:'<path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/>',plus:'<path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6z"/>',down:'<path d="M7.4 8.6L12 13.2l4.6-4.6L18 10l-6 6-6-6z"/>',note:'<path d="M12 3v10.55A4 4 0 1 0 14 17V7h4V3z"/>'};
+const I=(k,s=24)=>'<svg viewBox="0 0 24 24" width="'+s+'" height="'+s+'" fill="currentColor">'+P[k]+'</svg>';
+let db=null,songs=[],cur=-1,vocal=true,busy=false,fail=false,url=null,rmT=null;
+const au=$('au');
+const idb=()=>new Promise((res,rej)=>{try{const r=indexedDB.open('karaoke',1);r.onupgradeneeded=()=>r.result.createObjectStore('s',{keyPath:'id'});r.onsuccess=()=>res(r.result);r.onerror=()=>rej()}catch(e){rej(e)}});
+const put=s=>db?new Promise(r=>{try{const t=db.transaction('s','readwrite');t.objectStore('s').put(s);t.oncomplete=r;t.onerror=r}catch(e){r()}}):0;
+const del=id=>db?new Promise(r=>{try{const t=db.transaction('s','readwrite');t.objectStore('s').delete(id);t.oncomplete=r;t.onerror=r}catch(e){r()}}):0;
+const all=()=>db?new Promise(r=>{try{const q=db.transaction('s').objectStore('s').getAll();q.onsuccess=()=>r(q.result);q.onerror=()=>r([])}catch(e){r([])}}):[];
+
+async function karaoke(buf,amt,keep,onp){
+    const L=buf.getChannelData(0),R=buf.getChannelData(1),n=L.length,sr=buf.sampleRate;
+    const N=2048,H=1024,e=4*amt,cut=keep?Math.ceil(150*N/sr):0;
+    const win=new Float64Array(N),cs=new Float64Array(N),sn=new Float64Array(N),rev=new Uint16Array(N);
+    for(let i=0;i<N;i++){win[i]=Math.sin(Math.PI*(i+.5)/N);cs[i]=Math.cos(2*Math.PI*i/N);sn[i]=Math.sin(2*Math.PI*i/N);let r=0;for(let b=0;b<11;b++)if(i>>b&1)r|=1<<(10-b);rev[i]=r}
+    const fft=(re,im,inv)=>{
+      for(let i=0;i<N;i++){const j=rev[i];if(j>i){let t=re[i];re[i]=re[j];re[j]=t;t=im[i];im[i]=im[j];im[j]=t}}
+      for(let len=2;len<=N;len<<=1){const h=len>>1,sp=N/len;
+        for(let i=0;i<N;i+=len)for(let j=0;j<h;j++){
+          const wr=cs[j*sp],wi=inv?sn[j*sp]:-sn[j*sp],a=i+j,b=a+h;
+          const xr=re[b]*wr-im[b]*wi,xi=re[b]*wi+im[b]*wr;
+          re[b]=re[a]-xr;im[b]=im[a]-xi;re[a]+=xr;im[a]+=xi}}};
+    const oL=new Float32Array(n),oR=new Float32Array(n),re=new Float64Array(N),im=new Float64Array(N),or=new Float64Array(N),oi=new Float64Array(N);
+    let fr=0;
+    for(let p=-H;p<n;p+=H){
+      for(let i=0;i<N;i++){const j=p+i,ok=j>=0&&j<n;re[i]=ok?L[j]*win[i]:0;im[i]=ok?R[j]*win[i]:0}
+      fft(re,im,false);
+      for(let k=0;k<=N/2;k++){
+        const k2=(N-k)%N,zr=re[k],zi=im[k],wr=re[k2],wi=-im[k2];
+        const lr=(zr+wr)/2,li=(zi+wi)/2,rr=(zi-wi)/2,ri=-(zr-wr)/2;
+        const c=Math.max(0,2*(lr*rr+li*ri)/(lr*lr+li*li+rr*rr+ri*ri+1e-12));
+        const g=k<cut?1:Math.pow(1-c,e);
+        const a=lr*g,b=li*g,c2=rr*g,d2=ri*g;
+        or[k]=a-d2;oi[k]=b+c2;or[k2]=a+d2;oi[k2]=-b+c2;
+      }
+      fft(or,oi,true);
+      for(let i=0;i<N;i++){const j=p+i;if(j>=0&&j<n){oL[j]+=or[i]/N*win[i];oR[j]+=oi[i]/N*win[i]}}
+      if(++fr%300==0){onp(Math.min(99,Math.round(p/n*100)));await new Promise(r=>setTimeout(r,0))}
+    }
+    let pk=0;for(let i=0;i<n;i++){const m=Math.max(Math.abs(oL[i]),Math.abs(oR[i]));if(m>pk)pk=m}
+    const gn=pk>0.95?0.95/pk:1;
+    const wav=new ArrayBuffer(44+n*4),d=new DataView(wav);
+    const w=(o,s)=>{for(let i=0;i<s.length;i++)d.setUint8(o+i,s.charCodeAt(i))};
+    w(0,'RIFF');d.setUint32(4,36+n*4,true);w(8,'WAVEfmt ');d.setUint32(16,16,true);
+    d.setUint16(20,1,true);d.setUint16(22,2,true);d.setUint32(24,sr,true);
+    d.setUint32(28,sr*4,true);d.setUint16(32,4,true);d.setUint16(34,16,true);
+    w(36,'data');d.setUint32(40,n*4,true);
+    for(let i=0;i<n;i++){d.setInt16(44+i*4,Math.max(-1,Math.min(1,oL[i]*gn))*32767|0,true);d.setInt16(46+i*4,Math.max(-1,Math.min(1,oR[i]*gn))*32767|0,true)}
+    return new Blob([wav],{type:'audio/wav'});
+}
+
+const fmt=t=>{if(!isFinite(t))return'0:00';t=Math.floor(t);return Math.floor(t/60)+':'+String(t%60).padStart(2,'0')};
+function syncPlay(){const k=au.paused?'play':'pause';$('fpl').innerHTML=I(k,38);$('mpl').innerHTML=I(k,24)}
+function syncTg(){$('tg').classList.toggle('on',vocal);$('tg').setAttribute('aria-checked',vocal)}
+function vtext(){$('vs').textContent=vocal?'روشن، آهنگ اصلی':'قطع شده، نسخه کارائوکه';$('mv').textContent=vocal?'با صدای خواننده':'کارائوکه'}
+function render(){
+  const ls=$('ls');ls.innerHTML='';
+  if(!songs.length){ls.innerHTML='<div class="em">'+I('note',48)+'<p>هنوز آهنگی نداری.<br>با دکمه + بالای صفحه آهنگ اضافه کن.</p></div>';return}
+  songs.forEach((s,i)=>{
+    const r=document.createElement('div');r.className='row'+(i===cur?' cu':'');
+    r.innerHTML='<div class="art">'+I('note',22)+'</div><div class="mt"><div class="nm"></div><div class="sub">'+(s.out?'کارائوکه آماده ✓':'')+'</div></div>';
+    r.querySelector('.nm').textContent=s.name;r.onclick=()=>select(i,true);ls.append(r);
+  });
+}
+async function proc(s){
+  while(busy)await new Promise(r=>setTimeout(r,200));
+  if(s.out)return true;
+  busy=true;$('tg').disabled=true;const v=$('vs');
+  try{
+    v.textContent='در حال آماده‌سازی...';
+    const ctx=new (window.AudioContext||window.webkitAudioContext)();
+    const buf=await ctx.decodeAudioData(await s.blob.arrayBuffer());ctx.close();
+    if(buf.numberOfChannels<2){v.textContent='این آهنگ مونو هست و قابل حذف نیست';fail=true;busy=false;$('tg').disabled=false;return false}
+    await new Promise(r=>setTimeout(r,30));
+    s.out=await karaoke(buf,$('amt').value/100,$('bass').checked,p=>{v.textContent='در حال پردازش... '+p+'٪'});
+    await put(s);render();busy=false;$('tg').disabled=false;return true;
+  }catch(e){v.textContent='نشد: '+(e&&e.message?e.message:'فایل خونده نشد');fail=true;busy=false;$('tg').disabled=false;return false}
+}
+async function load(keep,go){
+  const s=songs[cur];if(!s)return;
+  if(!vocal&&!s.out){if(!await proc(s)){vocal=true;syncTg()}}
+  if(songs[cur]!==s)return;
+  const t=keep?au.currentTime:0,was=go||(keep&&!au.paused);
+  if(url)URL.revokeObjectURL(url);
+  url=URL.createObjectURL((!vocal&&s.out)?s.out:s.blob);au.src=url;
+  if(t)au.addEventListener('loadedmetadata',()=>{au.currentTime=t},{once:true});
+  if(was)au.play().catch(()=>{});
+  if(!fail)vtext();fail=false;
+}
+async function select(i,go){
+  cur=i;const s=songs[i];render();
+  $('mini').hidden=false;$('mn').textContent=$('fn').textContent=s.name;
+  await load(false,go);
+}
+const nxt=()=>{if(cur<songs.length-1)select(cur+1,true)};
+const prv=()=>{if(au.currentTime>3||cur<=0)au.currentTime=0;else select(cur-1,true)};
+const tgl=()=>{if(cur>=0)au.paused?au.play().catch(()=>{}):au.pause()};
+au.onplay=au.onpause=syncPlay;
+au.onended=()=>{if(cur<songs.length-1)nxt();else syncPlay()};
+au.ontimeupdate=au.onloadedmetadata=()=>{const d=au.duration||0,t=au.currentTime;$('sk').max=d||100;$('sk').value=t;$('t1').textContent=fmt(t);$('t2').textContent=fmt(d);$('mp').style.width=(d?t/d*100:0)+'%'};
+$('sk').oninput=e=>{au.currentTime=+e.target.value};
+$('fpl').onclick=$('mpl').onclick=e=>{e.stopPropagation();tgl()};
+$('mnx').onclick=e=>{e.stopPropagation();nxt()};
+$('nx').onclick=nxt;$('pv').onclick=prv;
+$('mopen').onclick=()=>$('full').classList.add('open');
+$('cl').onclick=()=>$('full').classList.remove('open');
+$('tg').onclick=async()=>{vocal=!vocal;syncTg();if(cur>=0)await load(true)};
+const reproc=async()=>{if(cur<0)return;const s=songs[cur];s.out=null;await put(s);render();if(!vocal)await load(true)};
+$('amt').onchange=$('bass').onchange=reproc;
+$('add').onclick=()=>$('fi').click();
+$('fi').onchange=async e=>{
+  for(const f of e.target.files){const s={id:Date.now()+Math.random(),name:f.name.replace(/\.[^.]+$/,''),blob:f,out:null};songs.push(s);await put(s)}
+  e.target.value='';render();
+};
+$('shr').onclick=()=>{
+  const s=songs[cur];if(!s)return;
+  if(!s.out){$('vs').textContent='اول صدای خواننده رو قطع کن تا کارائوکه ساخته بشه';return}
+  const f=new File([s.out],s.name+'-karaoke.wav',{type:'audio/wav'});
+  if(navigator.canShare&&navigator.canShare({files:[f]}))navigator.share({files:[f]}).catch(()=>{});
+  else $('vs').textContent='این مرورگر اشتراک‌گذاری فایل رو پشتیبانی نمیکنه';
+};
+$('rm').onclick=async()=>{
+  if(!rmT){$('rm').textContent='مطمئنی؟ دوباره بزن';rmT=setTimeout(()=>{rmT=null;$('rm').textContent='🗑️ حذف از لیست'},3000);return}
+  clearTimeout(rmT);rmT=null;$('rm').textContent='🗑️ حذف از لیست';
+  const s=songs[cur],i=cur;songs.splice(i,1);await del(s.id);au.pause();
+  if(songs.length)await select(Math.min(i,songs.length-1),false);
+  else{cur=-1;au.removeAttribute('src');$('mini').hidden=true;$('full').classList.remove('open');render()}
+};
+$('add').innerHTML=I('plus',26);$('cl').innerHTML=I('down',30);$('pv').innerHTML=I('prev',32);$('nx').innerHTML=I('next',32);$('mnx').innerHTML=I('next',24);
+document.querySelectorAll('.art').forEach(a=>a.innerHTML=I('note',a.classList.contains('big')?80:22));
+syncPlay();vtext();
+(async()=>{try{db=await idb()}catch(e){db=null}songs=await all();render()})();
+if('serviceWorker' in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
+</script>
+</body>
+</html>
